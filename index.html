@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<!--
+  该文件可直接在浏览器中打开运行。
+  文件名：index.html
+  用途：北京科技大学「钢好遇见你」实践团宣传主页
+  所有 CSS / JS 均内联于此文件，无需额外依赖。
+  所有需要用户手动修改的地方均已用 📌 注释标出，搜索 "📌 用户修改区域" 即可定位。
+
+  更新日志 v3.0：
+  - 导航栏嵌入北京科技大学校徽（学校LOGO-1.png）+ 实践团团徽（实践团logo.png）
+  - Hero 区校徽替换文字
+  - 新增「项目概览」版块（双渠道科普：线上+线下）
+  - 新增「预期目标」版块（4张数据卡片）
+  - 新增「目前进展」版块（华清园·社区青年汇 + 深圳住京办）
+  - 页脚嵌入实践团团徽
+  - 文案根据《社会实践介绍.docx》丰富优化
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>钢好遇见你 - 北京科技大学实践团</title>
+<style>
+/* ========== CSS Reset & 全局变量 ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 夜间主题（默认） */
+:root {
+  --deep-blue: #0A192F;
+  --bright-blue: #1E88E5;
+  --light-blue: #64B5F6;
+  --accent: #29B6F6;
+  --bg-dark: #060F1E;
+  --bg-section: #060F1E;
+  --bg-card: rgba(17, 34, 64, 0.65);
+  --bg-card-solid: #112240;
+  --text-primary: #E6F1FF;
+  --text-secondary: #8892B0;
+  --text-muted: #5A6A8C;
+  --glass-bg: rgba(10, 25, 47, 0.75);
+  --glass-border: rgba(30, 136, 229, 0.18);
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --radius: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --hero-gradient: linear-gradient(160deg, #0A192F 0%, #0D2137 40%, #0A1628 100%);
+  --schedule-bg: rgba(17,34,64,0.3);
+  --footer-bg: #0A192F;
+  --footer-border: rgba(255,255,255,0.05);
+  --dot-inactive: rgba(255,255,255,0.25);
+  --arrow-bg: rgba(255,255,255,0.08);
+  --arrow-hover-bg: var(--bright-blue);
+  --member-role-bg: rgba(30,136,229,0.15);
+  --hamburger-color: #E6F1FF;
+  --btn-gradient: linear-gradient(135deg, #1E88E5, #1976D2);
+  --timing-bg: rgba(255,255,255,0.04);
+  --stat-bg: rgba(30,136,229,0.08);
+  --goal-card-bg: rgba(17,34,64,0.7);
+}
+
+/* 日间主题 */
+body.light-theme {
+  --deep-blue: #F0F4F8;
+  --bright-blue: #1565C0;
+  --light-blue: #1E88E5;
+  --accent: #0288D1;
+  --bg-dark: #FFFFFF;
+  --bg-section: #F5F7FA;
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --bg-card-solid: #FFFFFF;
+  --text-primary: #1A2332;
+  --text-secondary: #4A5568;
+  --text-muted: #718096;
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(30, 136, 229, 0.2);
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --hero-gradient: linear-gradient(160deg, #E8F0FE 0%, #D4E4FC 40%, #C8DCF8 100%);
+  --schedule-bg: #EDF2F7;
+  --footer-bg: #E2E8F0;
+  --footer-border: rgba(0,0,0,0.06);
+  --dot-inactive: rgba(0,0,0,0.2);
+  --arrow-bg: rgba(0,0,0,0.06);
+  --arrow-hover-bg: var(--bright-blue);
+  --member-role-bg: rgba(21,101,192,0.1);
+  --hamburger-color: #1A2332;
+  --btn-gradient: linear-gradient(135deg, #1565C0, #0D47A1);
+  --timing-bg: rgba(0,0,0,0.02);
+  --stat-bg: rgba(21,101,192,0.06);
+  --goal-card-bg: rgba(255,255,255,0.8);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+  transition: background 0.4s, color 0.4s;
+}
+
+a { color: var(--bright-blue); text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ========== 导航栏 ========== */
+/* 📌 用户修改区域：可修改导航菜单项文字 */
+.navbar {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--glass-border);
+  transition: background 0.4s, border 0.4s;
+}
+.navbar .container {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; height: 64px;
+}
+/* 📌 用户修改区域：修改团队LOGO（校徽图片 + 文字） */
+.navbar .logo-area {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+/* 📌 用户修改区域：替换校徽图片 src */
+.navbar .logo-img {
+  height: 180px; width: auto; display: block; object-fit: contain;
+}
+.navbar .logo-text {
+  font-size: 1.2rem; font-weight: 700; letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--bright-blue), var(--light-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; white-space: nowrap;
+}
+.navbar .logo-divider {
+  width: 1px; height: 24px; background: var(--glass-border); margin: 0 4px;
+}
+.navbar .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+.navbar .nav-links a {
+  color: var(--text-secondary); font-size: 0.95rem; font-weight: 500;
+  transition: color var(--transition); position: relative;
+}
+.navbar .nav-links a:hover, .navbar .nav-links a.active { color: var(--bright-blue); }
+/* 📌 用户修改区域：主题切换按钮文字（🌙/☀️）可修改 */
+.theme-toggle {
+  background: none; border: 1px solid var(--glass-border); border-radius: 20px;
+  padding: 6px 12px; cursor: pointer; font-size: 0.9rem; color: var(--text-secondary);
+  transition: all var(--transition); margin-left: 8px; white-space: nowrap;
+}
+.theme-toggle:hover { color: var(--bright-blue); border-color: var(--bright-blue); }
+/* 移动端汉堡菜单 */
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { width: 24px; height: 2px; background: var(--hamburger-color); border-radius: 2px; transition: var(--transition); }
+
+/* ========== Hero 区域 ========== */
+/* 📌 用户修改区域：可替换横幅背景图 URL */
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px;
+  background: var(--hero-gradient);
+  position: relative; overflow: hidden;
+  transition: background 0.4s;
+}
+.hero::before {
+  content: ''; position: absolute; top: -30%; right: -15%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(30,136,229,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -20%; left: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(41,182,246,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero .container { position: relative; z-index: 1; max-width: 800px; }
+/* 📌 用户修改区域：校徽图片 - 替换 src */
+.hero .hero-badge-img {
+  height: 256px; width: auto; margin: 0 auto 20px; display: block; object-fit: contain;
+}
+/* 📌 用户修改区域 1：修改主标题（队名） */
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 800;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--light-blue) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 16px; letter-spacing: 4px;
+}
+/* 📌 用户修改区域 2：修改口号/标语 */
+.hero .slogan {
+  font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 32px;
+  font-style: italic; letter-spacing: 1px;
+}
+/* 📌 用户修改区域 3：修改简介文字 */
+.hero .intro {
+  font-size: 1.05rem; color: var(--text-muted); max-width: 640px;
+  margin: 0 auto 40px; line-height: 1.9;
+}
+.hero .btn-primary {
+  display: inline-block; padding: 14px 40px; border-radius: 30px;
+  background: var(--btn-gradient);
+  color: #fff; font-weight: 600; font-size: 1rem; letter-spacing: 1px;
+  transition: transform var(--transition), box-shadow var(--transition);
+  border: none; cursor: pointer;
+}
+.hero .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(30,136,229,0.4); }
+
+/* ========== 通用区块 ========== */
+.section { padding: 100px 24px; background: var(--bg-section); transition: background 0.4s; }
+.section .container { max-width: 1200px; margin: 0 auto; }
+.section-title {
+  text-align: center; font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700;
+  margin-bottom: 12px; color: var(--text-primary);
+}
+.section-subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 56px; font-size: 1rem; }
+.section-line {
+  width: 60px; height: 3px; background: var(--bright-blue); margin: 0 auto 16px; border-radius: 2px;
+}
+
+/* ========== 项目概览（双渠道） ========== */
+/* 📌 用户修改区域：项目概览版块样式 */
+.overview-section { background: var(--deep-blue); }
+.overview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+.overview-card {
+  background: var(--bg-card-solid); border-radius: var(--radius); padding: 40px 32px;
+  border: 1px solid var(--glass-border); text-align: center;
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative; overflow: hidden;
+}
+.overview-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.overview-card .oc-icon { font-size: 2.8rem; margin-bottom: 16px; display: block; }
+/* 📌 用户修改区域：卡片标题可修改 */
+.overview-card .oc-title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+/* 📌 用户修改区域：卡片描述可修改 */
+.overview-card .oc-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; text-align: left; }
+.overview-card .oc-desc ul { list-style: none; padding: 0; }
+.overview-card .oc-desc ul li { padding: 4px 0; padding-left: 20px; position: relative; }
+.overview-card .oc-desc ul li::before { content: '•'; position: absolute; left: 0; color: var(--bright-blue); font-weight: bold; }
+
+/* ========== 预期目标（数据卡片） ========== */
+/* 📌 用户修改区域：预期目标版块 */
+.goals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.goal-card {
+  background: var(--goal-card-bg); border-radius: var(--radius); padding: 36px 20px;
+  text-align: center; border: 1px solid var(--glass-border);
+  transition: transform var(--transition), box-shadow var(--transition);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.goal-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+/* 📌 用户修改区域：目标数字 */
+.goal-card .g-number {
+  font-size: 2.6rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--bright-blue), var(--light-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.goal-card .g-unit { font-size: 1.1rem; color: var(--bright-blue); font-weight: 600; }
+/* 📌 用户修改区域：目标描述 */
+.goal-card .g-label { color: var(--text-secondary); font-size: 0.92rem; margin-top: 8px; line-height: 1.6; }
+.goal-card .g-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+
+/* ========== 目前进展 ========== */
+/* 📌 用户修改区域：进展版块 */
+.progress-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+.progress-card {
+  background: var(--bg-card-solid); border-radius: var(--radius); padding: 32px;
+  border: 1px solid var(--glass-border); display: flex; gap: 20px; align-items: flex-start;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.progress-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.progress-card .p-icon {
+  width: 48px; height: 48px; border-radius: 12px; background: rgba(30,136,229,0.15);
+  display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;
+}
+/* 📌 用户修改区域：进展标题 */
+.progress-card .p-title { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+/* 📌 用户修改区域：进展描述 */
+.progress-card .p-desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
+.progress-card .p-tag {
+  display: inline-block; margin-top: 8px; padding: 2px 10px; border-radius: 10px;
+  font-size: 0.75rem; font-weight: 600;
+  background: rgba(76,175,80,0.15); color: #4CAF50;
+  letter-spacing: 0.5px;
+}
+
+/* ========== 成员风采 · 滑动遇见 ========== */
+.members-section { background: var(--bg-section); }
+.carousel-wrapper {
+  position: relative; max-width: 1000px; margin: 0 auto;
+  padding: 0 56px;
+}
+.carousel-viewport {
+  overflow: hidden; border-radius: var(--radius);
+}
+.carousel-track {
+  display: flex; gap: 24px;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: grab; user-select: none; -webkit-user-select: none;
+}
+.carousel-track:active { cursor: grabbing; }
+.carousel-track.dragging { transition: none; }
+
+/* 📌 用户修改区域：成员卡片样式 */
+.member-carousel-card {
+  flex: 0 0 calc((100% - 48px) / 3);
+  min-width: calc((100% - 48px) / 3);
+  background: var(--bg-card);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 32px 24px 28px;
+  text-align: left;
+  transition: transform var(--transition), box-shadow var(--transition), background 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.member-carousel-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+}
+.member-carousel-card .hover-hint {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(30,136,229,0.85));
+  color: #fff; text-align: center; padding: 12px 16px 14px;
+  font-size: 0.85rem; letter-spacing: 1px;
+  transform: translateY(100%); transition: transform 0.3s ease;
+  border-radius: 0 0 20px 20px;
+}
+.member-carousel-card:hover .hover-hint { transform: translateY(0); }
+
+/* 📌 用户修改区域：头像 */
+.member-carousel-card .m-avatar {
+  width: 72px; height: 72px; border-radius: 50%; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.35rem; font-weight: 700; color: #fff; letter-spacing: 2px;
+  flex-shrink: 0;
+}
+.member-carousel-card .m-avatar img {
+  width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+}
+/* 📌 用户修改区域：姓名 */
+.member-carousel-card .m-name {
+  font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);
+}
+/* 📌 用户修改区域：组别标签 */
+.member-carousel-card .m-role-tag {
+  display: inline-block; padding: 3px 14px; border-radius: 14px;
+  font-size: 0.82rem; font-weight: 600; margin-bottom: 16px;
+  background: var(--member-role-bg); color: var(--bright-blue);
+}
+/* 📌 用户修改区域：个人简介 */
+.member-carousel-card .m-bio {
+  color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8;
+}
+.member-carousel-card .m-bio p { margin-bottom: 6px; }
+.member-carousel-card .m-bio p:last-child { margin-bottom: 0; }
+
+/* 左右箭头 */
+/* 📌 用户修改区域：滑动箭头样式 */
+.carousel-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--arrow-bg);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary); font-size: 1.2rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition); z-index: 10;
+}
+.carousel-arrow:hover { background: var(--arrow-hover-bg); color: #fff; border-color: var(--arrow-hover-bg); }
+.carousel-arrow.prev { left: 0; }
+.carousel-arrow.next { right: 0; }
+.carousel-arrow:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+/* 底部圆点指示器 */
+/* 📌 用户修改区域：圆点指示器样式 */
+.carousel-dots {
+  display: flex; justify-content: center; gap: 10px; margin-top: 28px;
+}
+.carousel-dots .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--dot-inactive); border: none; cursor: pointer;
+  transition: all var(--transition); padding: 0;
+}
+.carousel-dots .dot.active { background: var(--bright-blue); transform: scale(1.35); box-shadow: 0 0 10px rgba(30,136,229,0.5); }
+
+/* ========== 日程时间轴 ========== */
+.schedule-section { background: var(--schedule-bg); transition: background 0.4s; }
+.timeline { position: relative; padding-left: 48px; }
+.timeline::before {
+  content: ''; position: absolute; left: 18px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(180deg, var(--bright-blue), transparent);
+}
+.timeline-item { position: relative; margin-bottom: 40px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -38px; top: 6px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--bright-blue); box-shadow: 0 0 12px rgba(30,136,229,0.6);
+}
+/* 📌 用户修改区域 6：修改日程时间段 */
+.timeline-day {
+  font-size: 0.8rem; color: var(--bright-blue); font-weight: 600;
+  letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase;
+}
+/* 📌 用户修改区域 7：修改日程标题 */
+.timeline-title { font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+/* 📌 用户修改区域 8：修改日程描述 */
+.timeline-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+
+/* ========== 成果掠影 ========== */
+.achievements-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+}
+.achievement-card {
+  background: var(--bg-card-solid); border-radius: var(--radius); overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.04); cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), background 0.4s;
+  position: relative;
+}
+.achievement-card:hover {
+  transform: translateY(-8px); box-shadow: 0 12px 40px rgba(30,136,229,0.2);
+}
+/* Shimmer */
+.achievement-card::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  animation: shimmer 3s infinite; z-index: 1; pointer-events: none;
+}
+@keyframes shimmer {
+  0%   { left: -100%; }
+  100% { left: 150%; }
+}
+/* 📌 用户修改区域：成果卡片图片 */
+.achievement-card .card-img {
+  width: 100%; height: 180px; object-fit: cover; display: block;
+}
+.achievement-card .card-body { padding: 20px; position: relative; z-index: 2; }
+/* 📌 用户修改区域 9：成果标题 */
+.achievement-card .card-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+/* 📌 用户修改区域 10：成果描述 */
+.achievement-card .card-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* Toast */
+.toast {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
+  background: var(--bg-card-solid); border: 1px solid var(--bright-blue);
+  color: var(--text-primary); padding: 20px 36px; border-radius: var(--radius);
+  font-size: 1.1rem; text-align: center; z-index: 9999; opacity: 0;
+  pointer-events: none; transition: opacity 0.35s, transform 0.35s;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+/* 模态 */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 8000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-content {
+  background: var(--bg-card-solid); border-radius: var(--radius); padding: 40px;
+  text-align: center; max-width: 420px; width: 90%;
+  border: 1px solid var(--glass-border);
+}
+.modal-content .emoji { font-size: 3rem; margin-bottom: 16px; }
+.modal-content p { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.7; }
+.modal-content .btn-close {
+  margin-top: 20px; padding: 10px 28px; border-radius: 20px;
+  background: var(--bright-blue); color: #fff; border: none; cursor: pointer;
+  font-size: 0.95rem; transition: background var(--transition);
+}
+.modal-content .btn-close:hover { background: #1976D2; }
+
+/* ========== 页脚 ========== */
+.footer {
+  text-align: center; padding: 48px 24px;
+  border-top: 1px solid var(--footer-border);
+  background: var(--footer-bg); transition: background 0.4s;
+}
+/* 📌 用户修改区域：页脚实践团团徽 - 替换 src */
+.footer .footer-logo {
+  height: 50px; width: auto; margin: 0 auto 20px; display: block; object-fit: contain;
+}
+/* 📌 用户修改区域 11：版权年份 */
+.footer .copyright { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 6px; }
+/* 📌 用户修改区域 12：页脚Slogan */
+.footer .footer-slogan {
+  color: var(--text-secondary); font-size: 0.85rem; font-style: italic; letter-spacing: 1px;
+}
+
+/* ========== 响应式 ========== */
+/* 平板 */
+@media (max-width: 1024px) {
+  .goals-grid { grid-template-columns: repeat(2, 1fr); }
+  .carousel-wrapper { padding: 0 48px; }
+  .carousel-track { gap: 20px; }
+  .member-carousel-card {
+    flex: 0 0 calc((100% - 20px) / 2);
+    min-width: calc((100% - 20px) / 2);
+  }
+  .achievements-grid { grid-template-columns: repeat(2, 1fr); }
+  .overview-grid { grid-template-columns: 1fr; }
+  .progress-grid { grid-template-columns: 1fr; }
+}
+/* 手机 */
+@media (max-width: 768px) {
+  .navbar .logo-text { font-size: 1rem; }
+  .navbar .logo-img { height: 140px; }
+  .navbar .logo-divider { display: none; }
+  .navbar .nav-links {
+    position: fixed; top: 64px; left: 0; width: 100%;
+    background: var(--glass-bg); backdrop-filter: blur(14px);
+    flex-direction: column; gap: 0; padding: 0;
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .navbar .nav-links.open { max-height: 360px; }
+  .navbar .nav-links li { text-align: center; padding: 14px 0; }
+  .navbar .nav-links .theme-toggle-li { padding: 8px 0; }
+  .hamburger { display: flex; }
+  .goals-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .goal-card { padding: 24px 14px; }
+  .goal-card .g-number { font-size: 2rem; }
+  .carousel-wrapper { padding: 0 40px; }
+  .carousel-track { gap: 0; }
+  .member-carousel-card {
+    flex: 0 0 100%; min-width: 100%;
+  }
+  .achievements-grid { grid-template-columns: 1fr; }
+  .timeline { padding-left: 32px; }
+  .hero { padding: 100px 16px 60px; }
+  .hero .hero-badge-img { height: 200px; }
+  .section { padding: 60px 16px; }
+}
+@media (max-width: 480px) {
+  .goals-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .goal-card .g-number { font-size: 1.7rem; }
+  .goal-card .g-label { font-size: 0.8rem; }
+  .carousel-wrapper { padding: 0 36px; }
+  .carousel-arrow { width: 36px; height: 36px; font-size: 1rem; }
+  .member-carousel-card { padding: 24px 18px 22px; }
+  .member-carousel-card .m-avatar { width: 60px; height: 60px; font-size: 1.1rem; }
+  .navbar .logo-text { font-size: 0.9rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== 导航栏 ==================== -->
+<!-- 📌 用户修改区域：修改导航菜单项 - 可直接修改下方 <a> 标签文字 -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <!-- 📌 用户修改区域：校徽图片（学校LOGO-1.png）+ 团队名 -->
+    <a href="#" class="logo-area">
+      <!-- 📌 替换校徽：修改 src 为你的校徽图片路径 -->
+      <img src="学校LOGO-1.png" alt="北京科技大学校徽" class="logo-img">
+      <span class="logo-divider"></span>
+      <span class="logo-text">钢好遇见你</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#intro" class="active">实践团介绍</a></li>
+      <li><a href="#overview">项目概览</a></li>
+      <li><a href="#members">成员风采</a></li>
+      <li><a href="#schedule">实践日程</a></li>
+      <li><a href="#achievements">成果掠影</a></li>
+      <li class="theme-toggle-li"><button class="theme-toggle" id="themeToggle" title="切换日间/夜间模式">🌙 夜间</button></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ==================== Hero 区域 ==================== -->
+<section class="hero" id="intro">
+  <div class="container">
+    <!-- 📌 用户修改区域：校徽图片 - 替换 src -->
+    <img src="学校LOGO-1.png" alt="北京科技大学" class="hero-badge-img">
+    <!-- 📌 用户修改区域 1：修改主标题 -->
+    <h1>钢好遇见你</h1>
+    <!-- 📌 用户修改区域 2：修改口号 - 来自docx项目主题 -->
+    <p class="slogan">"科学跑步，健康同行——北科大走进中小学与社区"</p>
+    <!-- 📌 用户修改区域 3：修改简介文字 - 结合docx项目概述 -->
+    <p class="intro">
+      本项目以"科学跑步，健康同行"为主题，聚焦大众跑步运动中的认知误区与健康痛点。
+      团队走进社区、校园，通过主题宣讲、现场答疑、动作示范等形式，
+      系统普及跑姿矫正、跑量规划、运动损伤预防等实用知识。
+      同步运营公众号与短视频平台，打造线上线下双渠道科普矩阵。
+    </p>
+    <a href="#overview" class="btn-primary">了解更多 →</a>
+  </div>
+</section>
+
+<!-- ==================== 项目概览（双渠道科普） ==================== -->
+<!-- 📌 用户修改区域：项目概览版块 - 内容来自《社会实践介绍.docx》 -->
+<section class="section overview-section" id="overview">
+  <div class="container">
+    <h2 class="section-title">项目概览</h2>
+    <div class="section-line"></div>
+    <p class="section-subtitle">线上线下双渠道联动，科学跑步知识全覆盖</p>
+    <div class="overview-grid">
+      <!-- 📌 用户修改区域：线下渠道卡片 -->
+      <div class="overview-card">
+        <span class="oc-icon">🏫</span>
+        <div class="oc-title">线下 · 走进社区与校园</div>
+        <div class="oc-desc">
+          <ul>
+            <li><strong>主题宣讲：</strong>走进社区、中小学，面对面讲解科学跑步知识</li>
+            <li><strong>现场答疑：</strong>解答跑姿、跑量、跑鞋选择等常见疑问</li>
+            <li><strong>动作示范：</strong>带领受众体验热身操、正确跑姿练习</li>
+            <li><strong>互动交流：</strong>针对不同年龄段设计差异化互动环节</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 📌 用户修改区域：线上渠道卡片 -->
+      <div class="overview-card">
+        <span class="oc-icon">📱</span>
+        <div class="oc-title">线上 · 新媒体科普矩阵</div>
+        <div class="oc-desc">
+          <ul>
+            <li><strong>公众号运营：</strong>定期发布跑步健康科普推文</li>
+            <li><strong>短视频平台：</strong>教学视频、误区解读、趣味科普</li>
+            <li><strong>图文内容：</strong>专业知识通俗化，轻量化易传播</li>
+            <li><strong>覆盖面广：</strong>打破时空限制，服务更多跑步爱好者</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 预期目标 ==================== -->
+<!-- 📌 用户修改区域：预期目标版块 - 4个数据卡片，内容来自docx -->
+<section class="section" id="goals">
+  <div class="container">
+    <h2 class="section-title">预期目标</h2>
+    <div class="section-line"></div>
+    <p class="section-subtitle">四大维度，量化实践成果</p>
+    <div class="goals-grid">
+      <!-- 📌 用户修改区域：目标1 - 修改数字和描述 -->
+      <div class="goal-card">
+        <span class="g-icon">🎯</span>
+        <span class="g-number">200</span><span class="g-unit">+</span>
+        <div class="g-label">线下科普受众<br>走进社区与校园</div>
+      </div>
+      <!-- 📌 用户修改区域：目标2 -->
+      <div class="goal-card">
+        <span class="g-icon">💪</span>
+        <span class="g-number">500</span><span class="g-unit">+</span>
+        <div class="g-label">线上传播覆盖<br>公众号 + 短视频矩阵</div>
+      </div>
+      <!-- 📌 用户修改区域：目标3 -->
+      <div class="goal-card">
+        <span class="g-icon">📚</span>
+        <span class="g-number">10</span><span class="g-unit">+</span>
+        <div class="g-label">科普推文与视频<br>可复用的成果素材库</div>
+      </div>
+      <!-- 📌 用户修改区域：目标4 -->
+      <div class="goal-card">
+        <span class="g-icon">🏃</span>
+        <span class="g-number">0</span><span class="g-unit">损伤</span>
+        <div class="g-label">科学运动理念<br>降低跑步损伤风险</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 目前进展 ==================== -->
+<!-- 📌 用户修改区域：目前进展版块 - 内容来自docx"目前进展"章节 -->
+<section class="section overview-section" id="progress">
+  <div class="container">
+    <h2 class="section-title">目前进展</h2>
+    <div class="section-line"></div>
+    <p class="section-subtitle">实践正在有序推进中，以下为最新动态</p>
+    <div class="progress-grid">
+      <!-- 📌 用户修改区域：进展1 - 华清园社区 -->
+      <div class="progress-card">
+        <div class="p-icon">🏘️</div>
+        <div>
+          <div class="p-title">华清园·社区青年汇</div>
+          <div class="p-desc">
+            已联系社工并完成对接，面向儿童、青年及大学生群体开展科学跑步宣讲。
+          </div>
+          <!-- 📌 用户修改区域：进展标签 -->
+          <span class="p-tag">✅ 已对接</span>
+        </div>
+      </div>
+      <!-- 📌 用户修改区域：进展2 - 深圳住京办 -->
+      <div class="progress-card">
+        <div class="p-icon">🏢</div>
+        <div>
+          <div class="p-title">深圳大厦（深圳住京办）</div>
+          <div class="p-desc">
+            已联系深圳住京办，预计在该部门面向工作人员开展专场宣讲与交流。
+          </div>
+          <!-- 📌 用户修改区域：进展标签 -->
+          <span class="p-tag">✅ 已对接</span>
+        </div>
+      </div>
+      <!-- 📌 用户修改区域：进展3 - 物资准备 -->
+      <div class="progress-card">
+        <div class="p-icon">📦</div>
+        <div>
+          <div class="p-title">物资与宣传物料筹备</div>
+          <div class="p-desc">
+            队徽、队旗设计已完成，公众号已开通并发布首篇推文，采购物资清单确认中。
+          </div>
+          <!-- 📌 用户修改区域：进展标签 -->
+          <span class="p-tag">🔄 进行中</span>
+        </div>
+      </div>
+      <!-- 📌 用户修改区域：进展4 - 任务分工 -->
+      <div class="progress-card">
+        <div class="p-icon">📋</div>
+        <div>
+          <div class="p-title">任务分工与培训启动</div>
+          <div class="p-desc">
+            团队已完成任务分工，系统学习《无伤跑法》等专业书籍，开始试讲准备工作。
+          </div>
+          <!-- 📌 用户修改区域：进展标签 -->
+          <span class="p-tag">🔄 进行中</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 成员风采 · 滑动遇见 ==================== -->
+<section class="section members-section" id="members">
+  <div class="container">
+    <h2 class="section-title">成员风采 · 滑动遇见</h2>
+    <div class="section-line"></div>
+    <p class="section-subtitle">← 左右滑动卡片，认识每一位队员 →</p>
+
+    <div class="carousel-wrapper" id="carouselWrapper">
+      <button class="carousel-arrow prev" id="carouselPrev" aria-label="上一张">◀</button>
+      <div class="carousel-viewport" id="carouselViewport">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- 成员卡片由 JS 动态生成 -->
+        </div>
+      </div>
+      <button class="carousel-arrow next" id="carouselNext" aria-label="下一张">▶</button>
+    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+</section>
+
+<!-- ==================== 实践日程 ==================== -->
+<section class="section schedule-section" id="schedule">
+  <div class="container">
+    <h2 class="section-title">实践日程</h2>
+    <div class="section-line"></div>
+    <p class="section-subtitle">14天，每一步都值得铭记</p>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ==================== 成果掠影 ==================== -->
+<section class="section" id="achievements">
+  <div class="container">
+    <h2 class="section-title">成果掠影</h2>
+    <div class="section-line"></div>
+    <p class="section-subtitle">点击卡片查看详情（资料持续更新中…）</p>
+    <div class="achievements-grid" id="achievementsGrid"></div>
+  </div>
+</section>
+
+<!-- ==================== 页脚 ==================== -->
+<footer class="footer">
+  <!-- 📌 用户修改区域：页脚实践团团徽 - 替换 src -->
+  <img src="实践团logo.png" alt="钢好遇见你实践团团徽" class="footer-logo">
+  <!-- 📌 用户修改区域 11：修改版权年份及团队名称 -->
+  <p class="copyright">© 2026 北京科技大学 钢好遇见你实践团</p>
+  <!-- 📌 用户修改区域 12：修改页脚Slogan -->
+  <p class="footer-slogan">科学跑步，健康同行 · 每一步都算数 ♪</p>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast">🎉 该成果资料正在整理中，即将上线！</div>
+
+<!-- 模态 -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-content">
+    <div class="emoji">📦</div>
+    <p id="modalText">🎉 该成果资料正在整理中，即将上线！</p>
+    <button class="btn-close" id="modalClose">我知道了</button>
+  </div>
+</div>
+
+<script>
+/* ========== 主题切换 ========== */
+/*
+   📌 用户修改区域 - 主题切换：
+   默认夜间模式，点击按钮可在日间/夜间之间切换。
+   切换状态保存在 localStorage 中，刷新页面后保持。
+*/
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') document.body.classList.add('light-theme');
+})();
+const themeToggle = document.getElementById('themeToggle');
+function updateThemeUI() {
+  const isLight = document.body.classList.contains('light-theme');
+  themeToggle.innerHTML = isLight ? '☀️ 日间' : '🌙 夜间';
+}
+updateThemeUI();
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
+  const isLight = document.body.classList.contains('light-theme');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  updateThemeUI();
+});
+
+/* ========== 汉堡菜单 ========== */
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => { navLinks.classList.toggle('open'); });
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => { navLinks.classList.remove('open'); });
+});
+
+/* ========== 导航高亮（滚动监听） ========== */
+const sections = document.querySelectorAll('section[id]');
+const navAs = navLinks.querySelectorAll('a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 100) current = sec.getAttribute('id');
+  });
+  navAs.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+});
+
+/* ========== Toast / Modal ========== */
+const toast = document.getElementById('toast');
+const modalOverlay = document.getElementById('modalOverlay');
+const modalText = document.getElementById('modalText');
+const modalClose = document.getElementById('modalClose');
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => { toast.classList.remove('show'); }, 2000);
+}
+function showModal(msg) {
+  modalText.innerHTML = msg;
+  modalOverlay.classList.add('show');
+}
+modalClose.addEventListener('click', () => { modalOverlay.classList.remove('show'); });
+modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('show'); });
+
+/* ========== 成员数据（📌 用户修改区域：10位成员完整信息） ========== */
+/*
+   📌 用户修改区域 - 成员信息（共10人）：
+   每位成员包含以下字段：
+   - name:     姓名
+   - role:     组别（🚀宣讲组/📋后勤组/📝记录组/🔍调研组/🎯策划组）
+   - bio:      2-3句个人简介（字符串数组，每句一行）
+   - avatarUrl: 真实头像URL（留空则自动用姓名拼音首字母生成彩色头像）
+*/
+const members = [
+  /* 📌 用户修改区域：成员1 */
+  { name: '陈思远', role: '🚀 宣讲组', bio: ['来自材料科学与工程学院，大二。','从小热爱跑步，高中时曾担任校田径队队长，800米最好成绩2分05秒。','这次实践希望能把科学的跑步方法带给更多小朋友，让他们跑得开心、跑得安全。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员2 */
+  { name: '林小彤', role: '🚀 宣讲组', bio: ['经管学院大二学生，校学生会体育部干事。','去年完成了人生第一场北京半程马拉松，从此迷上了长跑，也开始系统学习运动营养知识。','希望能用自己的亲身体验告诉孩子们：跑步不是苦差事，而是可以陪伴一生的好朋友。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员3 */
+  { name: '赵一航', role: '🔍 调研组', bio: ['计算机与通信工程学院大三，课余兼职健身教练已有两年。','对运动生物力学特别感兴趣，喜欢用数据说话——每个跑姿细节背后都有科学原理。','希望这次调研能真正了解中小学生的运动习惯，为后续科普提供扎实依据。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员4 */
+  { name: '周雨晴', role: '📝 记录组', bio: ['文法学院大二，校摄影社副社长，镜头感满分。','坚持晨跑三年，拍过无数个操场上的日出。最擅长用相机定格运动中那些真实又动人的瞬间。','期待用影像记录下这次实践的点滴，让更多人看到孩子们奔跑时的笑脸。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员5 */
+  { name: '王子轩', role: '🎯 策划组', bio: ['机械工程学院大三学生，校跑协核心成员。','跑过三次全马，最好的成绩是3小时28分。最喜欢带着新手一步步突破自己的感觉。','负责本次实践的课程设计与活动策划，目标是让每一场宣讲都「有干货、有互动、有温度」。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员6 */
+  { name: '刘佳琳', role: '🚀 宣讲组', bio: ['外国语学院大三，英语辩论队队长，擅长用中英双语讲解。','初中时因跑步姿势不对扭伤过脚踝，后来遇到一位好教练才纠正过来。这段经历让我深知科学跑步的重要性。','希望小朋友们比我幸运——从一开始就用正确的方式奔跑。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员7 */
+  { name: '吴浩然', role: '📋 后勤组', bio: ['土木与资源工程学院大二，班里公认的"大管家"。','高中当了三年体育委员，最拿手的就是把各种器材、物料安排得井井有条。','后勤无小事——保证每一场宣讲的物资准时到位，就是我最踏实的存在方式。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员8 */
+  { name: '郑悦然', role: '📝 记录组', bio: ['数理学院大三，对数据分析和可视化特别着迷。','大二开始规律跑步——用数据管理配速、监控心率，半年减重15斤。','这次负责问卷设计与数据整理，用图表讲好每一段奔跑背后的故事。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员9 */
+  { name: '孙正阳', role: '🔍 调研组', bio: ['能源与环境工程学院大二，校定向越野队队员。','在森林、公园、校园里跑过无数次定向赛，深刻体会到运动与环境之间的奇妙联系。','调研方向聚焦「校园运动环境对青少年跑步习惯的影响」，让数据为改善运动条件发声。'], avatarUrl: '' },
+  /* 📌 用户修改区域：成员10 */
+  { name: '杨若曦', role: '🎯 策划组', bio: ['自动化学院大三，连续两年组织"为爱奔跑"校园公益跑活动。','深信跑步不只是一种运动，更可以成为连接人心的桥梁。','除了策划宣讲流程，还在设计一款适合中小学生课间玩的「闯关式热身小游戏」。'], avatarUrl: '' }
+];
+
+/* ========== 工具函数 ========== */
+function getInitials(name) {
+  if (!name) return '?';
+  const map = {
+    '陈':'C','林':'L','赵':'Z','周':'Z','王':'W','刘':'L','吴':'W','郑':'Z','孙':'S','杨':'Y',
+    '思':'S','远':'Y','小':'X','彤':'T','一':'Y','航':'H','雨':'Y','晴':'Q','子':'Z','轩':'X',
+    '佳':'J','琳':'L','浩':'H','然':'R','悦':'Y','正':'Z','阳':'Y','若':'R','曦':'X',
+    '文':'W','明':'M','华':'H','强':'Q','伟':'W','芳':'F','敏':'M','静':'J','丽':'L',
+    '军':'J','勇':'Y','磊':'L','超':'C','峰':'F','波':'B','涛':'T','鹏':'P'
+  };
+  let result = '';
+  for (const ch of name) { result += map[ch] || ch; }
+  return result;
+}
+function getAvatarColor(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return `hsl(${Math.abs(hash) % 360}, 62%, 50%)`;
+}
+
+/* ========== 渲染成员轮播卡片 ========== */
+const carouselTrack = document.getElementById('carouselTrack');
+members.forEach((m, idx) => {
+  const initials = getInitials(m.name);
+  const bgColor = getAvatarColor(m.name);
+  const bioHTML = m.bio.map(s => `<p>${s}</p>`).join('');
+  const card = document.createElement('div');
+  card.className = 'member-carousel-card';
+  card.setAttribute('data-index', idx);
+  card.innerHTML = `
+    <div class="m-avatar" style="background:${bgColor};" title="${m.name}">
+      ${m.avatarUrl ? `<img src="${m.avatarUrl}" alt="${m.name}">` : initials}
+    </div>
+    <div class="m-name">${m.name}</div>
+    <div class="m-role-tag">${m.role}</div>
+    <div class="m-bio">${bioHTML}</div>
+    <div class="hover-hint">👆 点击查看TA的宣讲故事</div>
+  `;
+  card.addEventListener('click', () => {
+    showModal(`🎤 ${m.name} · ${m.role}<br><br>「宣讲故事」功能开发中，敬请期待！`);
+  });
+  carouselTrack.appendChild(card);
+});
+
+/* ========== 轮播逻辑 ========== */
+const viewport = document.getElementById('carouselViewport');
+const track = document.getElementById('carouselTrack');
+const prevBtn = document.getElementById('carouselPrev');
+const nextBtn = document.getElementById('carouselNext');
+const dotsContainer = document.getElementById('carouselDots');
+
+let currentIndex = 0, visibleCards = 3, cardWidth = 0;
+const totalCards = members.length;
+let maxIndex = 0, isDragging = false, startX = 0, scrollLeft = 0;
+
+function calcLayout() {
+  const vw = viewport.clientWidth;
+  if (vw <= 768) visibleCards = 1;
+  else if (vw <= 1024) visibleCards = 2;
+  else visibleCards = 3;
+  cardWidth = vw / visibleCards;
+  maxIndex = Math.max(0, totalCards - visibleCards);
+  const cards = track.querySelectorAll('.member-carousel-card');
+  cards.forEach(card => {
+    card.style.flex = `0 0 ${cardWidth}px`;
+    card.style.minWidth = `${cardWidth}px`;
+  });
+  if (cards.length >= 2) cardWidth = cards[1].offsetLeft - cards[0].offsetLeft;
+  maxIndex = Math.max(0, totalCards - visibleCards);
+}
+function updateDots() {
+  const totalPages = Math.ceil(totalCards / visibleCards);
+  const currentPage = Math.floor(currentIndex / visibleCards);
+  dotsContainer.innerHTML = '';
+  for (let i = 0; i < totalPages; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === currentPage ? ' active' : '');
+    dot.setAttribute('aria-label', `第${i + 1}页`);
+    dot.addEventListener('click', () => goToSlide(i * visibleCards));
+    dotsContainer.appendChild(dot);
+  }
+}
+function goToSlide(index) {
+  currentIndex = Math.max(0, Math.min(index, maxIndex));
+  track.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+  updateDots();
+  prevBtn.disabled = currentIndex <= 0;
+  nextBtn.disabled = currentIndex >= maxIndex;
+}
+prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+track.addEventListener('mousedown', (e) => {
+  isDragging = true; startX = e.pageX; scrollLeft = currentIndex * cardWidth;
+  track.classList.add('dragging'); track.style.cursor = 'grabbing';
+});
+track.addEventListener('mouseleave', () => { if (isDragging) endDrag(); });
+track.addEventListener('mouseup', () => { if (isDragging) endDrag(); });
+track.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+  track.style.transform = `translateX(${-(scrollLeft - (e.pageX - startX))}px)`;
+});
+function endDrag() {
+  isDragging = false; track.classList.remove('dragging'); track.style.cursor = 'grab';
+  const offset = parseFloat(track.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
+  goToSlide(Math.round(-offset / cardWidth));
+}
+track.addEventListener('touchstart', (e) => {
+  isDragging = true; startX = e.touches[0].pageX; scrollLeft = currentIndex * cardWidth;
+  track.classList.add('dragging');
+}, { passive: true });
+track.addEventListener('touchend', () => { if (isDragging) endDrag(); });
+track.addEventListener('touchmove', (e) => {
+  if (!isDragging) return;
+  track.style.transform = `translateX(${-(scrollLeft - (e.touches[0].pageX - startX))}px)`;
+}, { passive: true });
+document.addEventListener('keydown', (e) => {
+  const ms = document.getElementById('members');
+  const r = ms.getBoundingClientRect();
+  if (r.top < window.innerHeight && r.bottom > 0) {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goToSlide(currentIndex - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); goToSlide(currentIndex + 1); }
+  }
+});
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { calcLayout(); goToSlide(currentIndex); }, 200);
+});
+calcLayout();
+goToSlide(0);
+
+/* ========== 日程数据（📌 用户修改区域） ========== */
+/*
+   📌 用户修改区域 - 实践日程：
+   修改 day（时间段）、title（标题）、desc（描述）。
+*/
+const schedule = [
+  { day: '第 1 - 3 天', title: '校内筹备与试讲', desc: '队员集中培训科学跑步知识与运动损伤预防要点，系统学习《无伤跑法》等专业书籍，精心设计互动课件，并开展多轮模拟试讲，优化宣讲流程。' },
+  { day: '第 4 - 9 天', title: '走进社区与校园宣讲', desc: '前往华清园·社区青年汇、深圳大厦等对接单位，以及北京市各中小学，开展"科学跑步进校园/进社区"主题宣讲，带领受众体验热身操与正确跑姿练习，同步进行问卷调研。' },
+  { day: '第 10 - 12 天', title: '数据整理与总结报告', desc: '回收并分析宣讲问卷，整理科普受众的跑步习惯数据，撰写实践总结报告与论文初稿，系统梳理经验与不足。' },
+  { day: '第 13 - 14 天', title: '成果梳理与展示准备', desc: '汇总全程影像素材，剪辑活动视频，排版宣传手册终稿，整理可复用的科普素材库，为最终答辩与成果展示做好全面准备。' }
+];
+const timeline = document.getElementById('timeline');
+schedule.forEach(item => {
+  const div = document.createElement('div');
+  div.className = 'timeline-item';
+  div.innerHTML = `
+    <div class="timeline-day">${item.day}</div>
+    <div class="timeline-title">${item.title}</div>
+    <div class="timeline-desc">${item.desc}</div>
+  `;
+  timeline.appendChild(div);
+});
+
+/* ========== 成果数据（📌 用户修改区域） ========== */
+/*
+   📌 用户修改区域 - 成果卡片（共6张）：
+   修改 title（标题）、desc（描述）、img（图片链接）。
+*/
+const achievements = [
+  { title: '首场宣讲：走进华清园社区', desc: '面向儿童、青年及大学生群体，带来生动有趣的科学跑步第一课。', img: 'https://picsum.photos/400/240?random=1' },
+  { title: '跑步热身操教学视频', desc: '由队员自编自导的5分钟动态热身操，适合中小学生及跑步新手跟练。', img: 'https://picsum.photos/400/240?random=2' },
+  { title: '青少年运动损伤手册（初稿）', desc: '图文并茂的预防指南，涵盖常见跑步损伤及紧急处理建议。', img: 'https://picsum.photos/400/240?random=3' },
+  { title: '运动误区解读系列推文', desc: '公众号首发，用通俗语言纠正"跑量越多越好""不热身直接跑"等常见误区。', img: 'https://picsum.photos/400/240?random=4' },
+  { title: '互动课堂：跑姿小实验', desc: '用趣味实验让参与者直观感受正确与错误跑姿的差异，反馈热烈。', img: 'https://picsum.photos/400/240?random=5' },
+  { title: '实践纪实短片（剪辑中）', desc: '14天精彩瞬间全记录，敬请期待完整版纪录短片上线。', img: 'https://picsum.photos/400/240?random=6' }
+];
+const achievementsGrid = document.getElementById('achievementsGrid');
+achievements.forEach(item => {
+  const card = document.createElement('div');
+  card.className = 'achievement-card';
+  card.innerHTML = `
+    <img src="${item.img}" alt="${item.title}" class="card-img" loading="lazy">
+    <div class="card-body">
+      <div class="card-title">${item.title}</div>
+      <div class="card-desc">${item.desc}</div>
+    </div>
+  `;
+  card.addEventListener('click', () => { showModal('🎉 该成果资料正在整理中，即将上线！'); });
+  achievementsGrid.appendChild(card);
+});
+</script>
+</body>
+</html>
