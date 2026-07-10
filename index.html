@@ -278,6 +278,53 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.5px;
 }
 
+/* ========== 团队瞬间 · 定格每一刻 ========== */
+.team-moment-section { background: var(--deep-blue); }
+.team-moment-grid {
+  display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: center;
+}
+.team-moment-main {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--glass-border);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.team-moment-main:hover {
+  transform: translateY(-4px); box-shadow: 0 12px 40px rgba(30,136,229,0.2);
+}
+.team-moment-main .tm-main-img {
+  width: 100%; height: 380px; object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+.team-moment-main:hover .tm-main-img { transform: scale(1.03); }
+.team-moment-main .tm-main-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  padding: 40px 20px 16px 20px;
+  display: flex; align-items: center; gap: 8px;
+  color: #fff; font-size: 0.92rem; font-weight: 500; letter-spacing: 0.5px;
+}
+.team-moment-main .tm-caption-icon { font-size: 1.1rem; }
+.team-moment-side { padding: 16px 8px; }
+.team-moment-side .tm-side-text h3 {
+  font-size: 1.6rem; font-weight: 700; color: var(--text-primary);
+  margin-bottom: 16px;
+}
+.team-moment-side .tm-side-text p {
+  color: var(--text-secondary); font-size: 0.95rem; line-height: 1.9;
+  margin-bottom: 24px;
+}
+.tm-quick-stats {
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+.tm-stat-item {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 12px 20px; border-radius: 12px;
+  background: var(--bg-card); border: 1px solid var(--glass-border);
+  min-width: 100px; flex: 1;
+}
+.tm-stat-num { font-size: 1.4rem; font-weight: 800; color: var(--bright-blue); }
+.tm-stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
 /* ========== 成员风采 · 滑动遇见 ========== */
 .members-section { background: var(--bg-section); }
 .carousel-wrapper {
@@ -526,6 +573,10 @@ img { max-width: 100%; display: block; }
   .timeline { padding-left: 32px; }
   .hero { padding: 100px 16px 60px; }
   .hero .hero-badge-img { height: 200px; }
+  .team-moment-grid { grid-template-columns: 1fr; gap: 20px; }
+  .team-moment-main .tm-main-img { height: 240px; }
+  .team-moment-side { padding: 8px 4px; }
+  .team-moment-side .tm-side-text h3 { font-size: 1.3rem; }
   .section { padding: 60px 16px; }
 }
 @media (max-width: 480px) {
@@ -715,6 +766,62 @@ img { max-width: 100%; display: block; }
           </div>
           <!-- 📌 用户修改区域：进展标签 -->
           <span class="p-tag">🔄 进行中</span>
+        </div>
+      </div>
+      <!-- 📌 用户修改区域：进展5 - 7.10动员小会 -->
+      <div class="progress-card">
+        <div class="p-icon">🤝</div>
+        <div>
+          <div class="p-title">7.10 动员小会 · 理化楼</div>
+          <div class="p-desc">
+            全体队员在北科大理化楼首次线下集结！互相自我介绍、明确实践安排与时间任务分配，气氛热烈、信心满满。
+          </div>
+          <span class="p-tag">✅ 已完成</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 团队瞬间 · 定格每一刻 ==================== -->
+<!-- 📌 用户修改区域：团队合照与精彩瞬间 -->
+<section class="section team-moment-section" id="teammoment">
+  <div class="container">
+    <h2 class="section-title">团队瞬间 · 定格每一刻</h2>
+    <div class="section-line"></div>
+    <p class="section-subtitle">用镜头记录我们并肩走过的日子</p>
+    <div class="team-moment-grid">
+      <!-- 📌 用户修改区域：主要合影 - hezhao1.jpg -->
+      <div class="team-moment-main">
+        <img src="hezhao1.jpg" alt="2026.7.10 理化楼实践前动员小会" class="tm-main-img">
+        <div class="tm-main-caption">
+          <span class="tm-caption-icon">📅</span>
+          2026.7.10 · 北科大理化楼 · 实践前动员小会
+        </div>
+      </div>
+      <div class="team-moment-side">
+        <div class="tm-side-text">
+          <h3>我们的第一张全家福</h3>
+          <p>
+            7月10日傍晚，全体队员第一次在线下齐聚理化楼。队长熊俊豪主持会议，
+            队员们逐一自我介绍、破冰交流，随后共同梳理了社会实践的整体时间线、
+            各项任务的负责人以及近期重点推进方向。一个小时的时间里，大家从线上网友
+            变成了并肩作战的战友，目标更清晰，信心也更足了。
+          </p>
+          <div class="tm-quick-stats">
+            <div class="tm-stat-item">
+              <span class="tm-stat-num">10</span>
+              <span class="tm-stat-label">全体成员</span>
+            </div>
+            <div class="tm-stat-item">
+              <span class="tm-stat-num">1</span>
+              <span class="tm-stat-label">小时×头脑风暴</span>
+            </div>
+            <div class="tm-stat-item">
+              <span class="tm-stat-num">🤝</span>
+              <span class="tm-stat-label">从线上到线下</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
