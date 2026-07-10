@@ -20,64 +20,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>钢好遇见你 - 北京科技大学实践团</title>
-<!-- 📌 用户修改区域：不蒜子第三方统计脚本 - 使用手动 JSONP 确保从 file:// 也能正常加载 -->
-<script>
-/* ========== 不蒜子手动 JSONP 实现（兼容 file:// 协议） ========== */
-(function() {
-  var pvEl = document.getElementById('busuanzi_pv');
-  var uvEl = document.getElementById('busuanzi_uv');
-  var timeout = setTimeout(function() {
-    // 超时后保持"加载中..."不动
-  }, 5000);
-
-  function updateBusuanzi(pv, uv) {
-    clearTimeout(timeout);
-    if (pvEl) pvEl.textContent = pv || '0';
-    if (uvEl) uvEl.textContent = uv || '0';
-  }
-
-  function fallback() {
-    updateBusuanzi('获取失败', '获取失败');
-  }
-
-  function loadBusuanzi() {
-    var callbackName = 'BusuanziCallback_' + Math.floor(1099511627776 * Math.random());
-    var script = document.createElement('script');
-    script.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=' + callbackName;
-    script.async = true;
-    script.onerror = fallback;
-
-    window[callbackName] = function(data) {
-      try {
-        var pv = data && (data.page_pv || data.site_uv || data.total_pv || '0');
-        var uv = data && (data.site_uv || data.total_uv || '0');
-        updateBusuanzi(pv, uv);
-      } catch(e) {
-        fallback();
-      }
-      delete window[callbackName];
-    };
-
-    // 设置 fallback 超时
-    var fallbackTimer = setTimeout(function() {
-      if (window[callbackName]) {
-        window[callbackName] = function() {};
-        delete window[callbackName];
-        fallback();
-      }
-    }, 4000);
-
-    document.head.appendChild(script);
-  }
-
-  // 等 DOM 完全加载后再执行
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    loadBusuanzi();
-  } else {
-    document.addEventListener('DOMContentLoaded', loadBusuanzi);
-  }
-})();
-</script>
+<!-- 不蒜子统计功能已移除 -->
 <style>
 /* ========== CSS Reset & 全局变量 ========== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -111,7 +54,6 @@
   --hamburger-color: #E6F1FF;
   --btn-gradient: linear-gradient(135deg, #1E88E5, #1976D2);
   --timing-bg: rgba(255,255,255,0.04);
-  --stat-bg: rgba(30,136,229,0.08);
   --goal-card-bg: rgba(17,34,64,0.7);
 }
 
@@ -142,7 +84,6 @@ body.light-theme {
   --hamburger-color: #1A2332;
   --btn-gradient: linear-gradient(135deg, #1565C0, #0D47A1);
   --timing-bg: rgba(0,0,0,0.02);
-  --stat-bg: rgba(21,101,192,0.06);
   --goal-card-bg: rgba(255,255,255,0.8);
 }
 
@@ -543,29 +484,6 @@ img { max-width: 100%; display: block; }
   color: var(--text-secondary); font-size: 0.85rem; font-style: italic; letter-spacing: 1px;
 }
 
-/* ========== 不蒜子访问统计 ========== */
-.busuanzi-area {
-  display: flex; justify-content: center; gap: 40px; margin: 24px auto 16px;
-  flex-wrap: wrap;
-}
-.busuanzi-area .stat-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 20px; border-radius: 20px;
-  background: var(--stat-bg);
-  border: 1px solid var(--glass-border);
-  font-size: 0.92rem; color: var(--text-secondary);
-  transition: background var(--transition);
-}
-.busuanzi-area .stat-item:hover {
-  background: rgba(30,136,229,0.15);
-}
-.busuanzi-area .stat-item .stat-icon { font-size: 1.1rem; }
-.busuanzi-area .stat-item .stat-label { font-weight: 500; }
-.busuanzi-area .stat-item .stat-number {
-  font-weight: 700; color: var(--bright-blue); font-size: 1.1rem;
-  min-width: 40px; display: inline-block; text-align: center;
-}
-
 /* ========== 响应式 ========== */
 /* 平板 */
 @media (max-width: 1024px) {
@@ -852,20 +770,6 @@ img { max-width: 100%; display: block; }
   <!-- 📌 用户修改区域 12：修改页脚Slogan -->
   <p class="footer-slogan">科学跑步，健康同行 · 每一步都算数 ♪</p>
 
-  <!-- ========== 不蒜子访问统计 ========== -->
-  <!-- 📌 用户修改区域：不蒜子统计显示区 - PV（总浏览量）和 UV（总访客数） -->
-  <div class="busuanzi-area">
-    <div class="stat-item">
-      <span class="stat-icon">👁️</span>
-      <span class="stat-label">总浏览量</span>
-      <span class="stat-number" id="busuanzi_pv">加载中...</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-icon">👤</span>
-      <span class="stat-label">总访客数</span>
-      <span class="stat-number" id="busuanzi_uv">加载中...</span>
-    </div>
-  </div>
 </footer>
 
 <!-- Toast -->
