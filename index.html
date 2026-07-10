@@ -20,6 +20,64 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>钢好遇见你 - 北京科技大学实践团</title>
+<!-- 📌 用户修改区域：不蒜子第三方统计脚本 - 使用手动 JSONP 确保从 file:// 也能正常加载 -->
+<script>
+/* ========== 不蒜子手动 JSONP 实现（兼容 file:// 协议） ========== */
+(function() {
+  var pvEl = document.getElementById('busuanzi_pv');
+  var uvEl = document.getElementById('busuanzi_uv');
+  var timeout = setTimeout(function() {
+    // 超时后保持"加载中..."不动
+  }, 5000);
+
+  function updateBusuanzi(pv, uv) {
+    clearTimeout(timeout);
+    if (pvEl) pvEl.textContent = pv || '0';
+    if (uvEl) uvEl.textContent = uv || '0';
+  }
+
+  function fallback() {
+    updateBusuanzi('获取失败', '获取失败');
+  }
+
+  function loadBusuanzi() {
+    var callbackName = 'BusuanziCallback_' + Math.floor(1099511627776 * Math.random());
+    var script = document.createElement('script');
+    script.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=' + callbackName;
+    script.async = true;
+    script.onerror = fallback;
+
+    window[callbackName] = function(data) {
+      try {
+        var pv = data && (data.page_pv || data.site_uv || data.total_pv || '0');
+        var uv = data && (data.site_uv || data.total_uv || '0');
+        updateBusuanzi(pv, uv);
+      } catch(e) {
+        fallback();
+      }
+      delete window[callbackName];
+    };
+
+    // 设置 fallback 超时
+    var fallbackTimer = setTimeout(function() {
+      if (window[callbackName]) {
+        window[callbackName] = function() {};
+        delete window[callbackName];
+        fallback();
+      }
+    }, 4000);
+
+    document.head.appendChild(script);
+  }
+
+  // 等 DOM 完全加载后再执行
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    loadBusuanzi();
+  } else {
+    document.addEventListener('DOMContentLoaded', loadBusuanzi);
+  }
+})();
+</script>
 <style>
 /* ========== CSS Reset & 全局变量 ========== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -485,6 +543,29 @@ img { max-width: 100%; display: block; }
   color: var(--text-secondary); font-size: 0.85rem; font-style: italic; letter-spacing: 1px;
 }
 
+/* ========== 不蒜子访问统计 ========== */
+.busuanzi-area {
+  display: flex; justify-content: center; gap: 40px; margin: 24px auto 16px;
+  flex-wrap: wrap;
+}
+.busuanzi-area .stat-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px; border-radius: 20px;
+  background: var(--stat-bg);
+  border: 1px solid var(--glass-border);
+  font-size: 0.92rem; color: var(--text-secondary);
+  transition: background var(--transition);
+}
+.busuanzi-area .stat-item:hover {
+  background: rgba(30,136,229,0.15);
+}
+.busuanzi-area .stat-item .stat-icon { font-size: 1.1rem; }
+.busuanzi-area .stat-item .stat-label { font-weight: 500; }
+.busuanzi-area .stat-item .stat-number {
+  font-weight: 700; color: var(--bright-blue); font-size: 1.1rem;
+  min-width: 40px; display: inline-block; text-align: center;
+}
+
 /* ========== 响应式 ========== */
 /* 平板 */
 @media (max-width: 1024px) {
@@ -686,7 +767,7 @@ img { max-width: 100%; display: block; }
       <div class="progress-card">
         <div class="p-icon">🏢</div>
         <div>
-          <div class="p-title">深圳大厦（深圳住京办）</div>
+          <div class="p-title">深圳大厦（深圳驻京办）</div>
           <div class="p-desc">
             已联系深圳住京办，预计在该部门面向工作人员开展专场宣讲与交流。
           </div>
@@ -770,6 +851,21 @@ img { max-width: 100%; display: block; }
   <p class="copyright">© 2026 北京科技大学 钢好遇见你实践团</p>
   <!-- 📌 用户修改区域 12：修改页脚Slogan -->
   <p class="footer-slogan">科学跑步，健康同行 · 每一步都算数 ♪</p>
+
+  <!-- ========== 不蒜子访问统计 ========== -->
+  <!-- 📌 用户修改区域：不蒜子统计显示区 - PV（总浏览量）和 UV（总访客数） -->
+  <div class="busuanzi-area">
+    <div class="stat-item">
+      <span class="stat-icon">👁️</span>
+      <span class="stat-label">总浏览量</span>
+      <span class="stat-number" id="busuanzi_pv">加载中...</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-icon">👤</span>
+      <span class="stat-label">总访客数</span>
+      <span class="stat-number" id="busuanzi_uv">加载中...</span>
+    </div>
+  </div>
 </footer>
 
 <!-- Toast -->
@@ -854,26 +950,26 @@ modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) m
    - avatarUrl: 真实头像URL（留空则自动用姓名拼音首字母生成彩色头像）
 */
 const members = [
-  /* 📌 用户修改区域：成员1 */
-  { name: '熊俊豪', role: '🎯 队长', bio: ['来自数理学院，大一。','从小热爱跑步，高中时曾担任校田径队队长，800米最好成绩2分05秒。','这次实践希望能把科学的跑步方法带给更多小朋友，让他们跑得开心、跑得安全。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员2 */
-  { name: '宋承逸', role: '🚀 宣讲组', bio: ['经管学院大一学生，校学生会体育部干事。','去年完成了人生第一场北京半程马拉松，从此迷上了长跑，也开始系统学习运动营养知识。','希望能用自己的亲身体验告诉孩子们：跑步不是苦差事，而是可以陪伴一生的好朋友。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员3 */
-  { name: '陆昊楠', role: '🚀 宣讲组', bio: ['计算机与通信工程学院大一，课余兼职健身教练已有两年。','对运动生物力学特别感兴趣，喜欢用数据说话——每个跑姿细节背后都有科学原理。','希望这次调研能真正了解中小学生的运动习惯，为后续科普提供扎实依据。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员4 */
-  { name: '何梦瑶', role: '📝 运营组', bio: ['文法学院大一，校摄影社副社长，镜头感满分。','坚持晨跑三年，拍过无数个操场上的日出。最擅长用相机定格运动中那些真实又动人的瞬间。','期待用影像记录下这次实践的点滴，让更多人看到孩子们奔跑时的笑脸。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员5 */
-  { name: '胥嘉', role: '📝 运营组', bio: ['机械工程学院大一学生，校跑协核心成员。','跑过三次全马，最好的成绩是3小时28分。最喜欢带着新手一步步突破自己的感觉。','负责本次实践的课程设计与活动策划，目标是让每一场宣讲都「有干货、有互动、有温度」。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员6 */
-  { name: '张雅', role: '📝 运营组', bio: ['外国语学院大一，英语辩论队队长，擅长用中英双语讲解。','初中时因跑步姿势不对扭伤过脚踝，后来遇到一位好教练才纠正过来。这段经历让我深知科学跑步的重要性。','希望小朋友们比我幸运——从一开始就用正确的方式奔跑。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员7 */
-  { name: '苏介甫', role: '📸 拍摄组', bio: ['土木与资源工程学院大一，班里公认的"大管家"。','高中当了三年体育委员，最拿手的就是把各种器材、物料安排得井井有条。','后勤无小事——保证每一场宣讲的物资准时到位，就是我最踏实的存在方式。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员8 */
-  { name: '张雨菲', role: '📝 记录组', bio: ['数理学院大一，对数据分析和可视化特别着迷。','大二开始规律跑步——用数据管理配速、监控心率，半年减重15斤。','这次负责问卷设计与数据整理，用图表讲好每一段奔跑背后的故事。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员9 */
-  { name: '王梓铭', role: '📸 拍摄组', bio: ['能源与环境工程学院大一，校定向越野队队员。','在森林、公园、校园里跑过无数次定向赛，深刻体会到运动与环境之间的奇妙联系。','调研方向聚焦「校园运动环境对青少年跑步习惯的影响」，让数据为改善运动条件发声。'], avatarUrl: '' },
-  /* 📌 用户修改区域：成员10 */
-  { name: '李俊洁', role: '📝 运营组', bio: ['自动化学院大一，连续两年组织"为爱奔跑"校园公益跑活动。','深信跑步不只是一种运动，更可以成为连接人心的桥梁。','除了策划宣讲流程，还在设计一款适合中小学生课间玩的「闯关式热身小游戏」。'], avatarUrl: '' }
+  /* 📌 用户修改区域：成员1 - 头像文件 xjh.jpg */
+  { name: '熊俊豪', role: '🎯 队长', bio: ['来自数理学院，大一。','大家好我是熊俊豪，来自江西抚州，是北科跑协的成员，目前在向半马国三努力训练，因为平时就喜欢跑步所以就发起了这个社会实践项目，召集了很多志同道合的下伙伴一起完成，真心感谢每一位队员的加入，没有你们就没有这个项目。作为队长，我会全力带领大家完成并充分体验这次社会实践，让大家都能有所收获，并且向大众普及科学的跑步知识，助力国内健康跑步风俗的打造！期待你的关注！'], avatarUrl: 'xjh.jpg' },
+  /* 📌 用户修改区域：成员2 - 头像文件 scy.jpg */
+  { name: '宋承逸', role: '🚀 宣讲组', bio: ['数理学院大一学生','我是宋承逸，主要负责实地宣讲，平时生活中也喜欢慢跑。热爱天文学，我们的大脑比天空更广阔！'], avatarUrl: 'scy.jpg' },
+  /* 📌 用户修改区域：成员3 - 头像文件 lhn.jpg */
+  { name: '陆昊楠', role: '🚀 宣讲组', bio: ['数理学院大一','大家好，我是陆昊楠，来自江苏南通，承担宣讲工作，爱运动，爱打游戏'], avatarUrl: 'lhn.jpg' },
+  /* 📌 用户修改区域：成员4 - 头像文件 hmy.jpg */
+  { name: '何梦瑶', role: '📝 运营组', bio: ['数理学院大一','大家好，我是何梦瑶，负责运营工作，享受追剧和阅读，会努力学习新东西'], avatarUrl: 'hmy.jpg' },
+  /* 📌 用户修改区域：成员5 - 头像文件 xj.jpg */
+  { name: '胥嘉', role: '📝 运营组', bio: ['冶金与生态工程学院大一学生','大家好，我是胥佳，来自甘肃酒泉，负责线上运营'], avatarUrl: 'xj.jpg' },
+  /* 📌 用户修改区域：成员6 - 头像文件 zy.png */
+  { name: '张雅', role: '📝 运营组', bio: ['外国语学院大一','大家好，我是张雅，喜欢音乐和探索未知，很高兴与大家共同踏上实践中的未知旅途。'], avatarUrl: 'zy.png' },
+  /* 📌 用户修改区域：成员7 - 头像文件 sjf.jpg */
+  { name: '苏介甫', role: '📸 拍摄组', bio: ['人工智能学院大一','大家好，我是苏介甫，承担剪辑工作'], avatarUrl: 'sjf.jpg' },
+  /* 📌 用户修改区域：成员8 - 头像文件 zyf.jpg */
+  { name: '张雨菲', role: '📝 记录组', bio: ['计算机与通信工程学院大一','大家好，我是张雨菲。在社会实践中主要负责PPT制作，擅长把调研数据和走访见闻，梳理成逻辑清晰、有温度的演示文稿。很高兴加入团队，我会努力让每一页PPT都讲好我们的实践故事，让成果展示更直观、更有说服力。期待和大家一起脚踏实地，把实践做深、把故事讲好～'], avatarUrl: 'zyf.jpg' },
+  /* 📌 用户修改区域：成员9 - 头像文件 wzm.jpg */
+  { name: '王梓铭', role: '📸 拍摄组', bio: ['数理学院大一','大家好，我是王梓铭，承担社会实践中的摄影工作，同时爱好轮滑，说不定能成为"轮滑摄影师"！'], avatarUrl: 'wzm.jpg' },
+  /* 📌 用户修改区域：成员10 - 头像文件 ljj.jpg */
+  { name: '李俊洁', role: '📝 运营组', bio: ['数理学院大一','大家好，我是李俊洁，负责线上网站运营，和其他工作的辅助'], avatarUrl: 'ljj.jpg' }
 ];
 
 /* ========== 工具函数 ========== */
@@ -1058,6 +1154,7 @@ achievements.forEach(item => {
   card.addEventListener('click', () => { showModal('🎉 该成果资料正在整理中，即将上线！'); });
   achievementsGrid.appendChild(card);
 });
+
 </script>
 </body>
 </html>
